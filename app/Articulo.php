@@ -9,7 +9,7 @@ class Articulo extends Model
     protected $table = 'articulo';
 
     protected $fillable = [
-    	'clave', 'nombre', 'id_categoria', 'cantidad', 'stock', 'precio', 'marca'
+    	'clave', 'nombre', 'id_categoria', 'cantidad', 'stock', 'precio', 'marca', 'imagen'
     ];
 
     public function categoria(){
@@ -23,7 +23,7 @@ class Articulo extends Model
 
     public function venta()
     {
-    	return $this->belongsToMany('App\Venta', 'venta_articulo', 'id_articulo', 'id_venta');
+    	return $this->belongsToMany('App\Venta', 'venta_articulo', 'id_articulo', 'id_venta')->withPivot('cantidad');
     }
 
     public function compra()

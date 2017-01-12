@@ -20,6 +20,11 @@
             'csrfToken' => csrf_token(),
         ]); ?>
     </script>
+    <script>
+        $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').focus()
+        })
+    </script>
 </head>
 <body>
     <div id="app">
@@ -56,8 +61,8 @@
                             <li><a href="{{ url('/register') }}">Registrar</a></li>
                         @else
                             <li><a href="{{ url('/articulo') }}">Articulos</a></li>
-                            <li><a href="{{ url('/ventas') }}">Ventas</a></li>
-                            <li><a href="{{ url('/compras') }}">Compras</a></li>
+                            <li><a href="{{ url('/venta') }}">Ventas</a></li>
+                            <li><a href="{{ url('/compra') }}">Compras</a></li>
                             <li><a href="{{ url('/cliente') }}">Clientes</a></li>
                             <li><a href="{{ url('/proveedor') }}">Proveedores</a></li>    
                             <li class="dropdown">
@@ -91,8 +96,20 @@
     <!-- Scripts -->
     <script src="/js/app.js"></script>
     <script src = "/jquery/jquery-3.1.1.js"></script>
+    <script src="/jquery/jqueryui/jquery-ui.js"></script>
     <script src=" {{asset('plugins/chosen/chosen.jquery.js')}} "></script>
+    <script src = "{{ asset('bootstrap/js/bootstrap.js') }}"></script>
 
     @yield('script')
+    <script>
+        //Javascript
+        $(function()
+        {
+            $( "#term" ).autocomplete({
+                source: "{{ route('venta.autocomplete') }}",
+                minLength: 3,
+            });
+        });
+    </script>
 </body>
 </html>

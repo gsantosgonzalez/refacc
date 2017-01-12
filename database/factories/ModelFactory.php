@@ -71,8 +71,8 @@ $factory->define(App\Venta::class, function(Faker\Generator $faker) {
 	return [
 		'fecha' => $faker->dateTimeThisMonth,
 		'total' => $faker->randomFloat(2, .50),
-		'pago' => $faker->randomElement($array = array('', 'CHEQUE', 'TD', 'TC', 'TE')),
-		'id_cliente' => $faker->numberBetween(1, 25)
+		'pago' => $faker->randomElement($array = array('EFVO', 'CHEQUE', 'TD', 'TC', 'TE')),
+		'id_cliente' => $faker->numberBetween(8, 25)
 	];
 });
 

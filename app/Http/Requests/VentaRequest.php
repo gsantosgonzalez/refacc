@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ArticuloRequest extends FormRequest
+class VentaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,8 @@ class ArticuloRequest extends FormRequest
     public function rules()
     {
         return [
-            'clave' => 'max:20|required',
-            'nombre' => 'max:80|required',
-            'id_categoria' => 'required',
-            'cantidad' => 'required|integer',
-            'stock' => 'required|integer',
-            'precio' => 'required|numeric',
-            'marca' => 'max:40|required'
+            'term' => 'required',
+            'cantidad' => 'required|integer|min:1'
         ];
     }
 }

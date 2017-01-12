@@ -24,22 +24,22 @@
 	        </ul>
 	    </div>
 	@endif
-	<div class="container">
+	<div class="content">
 		<div class = "formulario">
-			<h1>Ingresar a Inventario</h1>
+			<h1>Editar Artículo {{$articulo->nombre}}</h1>
 
-			{!! Form::open(['route' => 'articulo.store', 'files' => 'true']) !!}
+			{!! Form::open(['route' => ['articulo.update', $articulo], 'method' => 'PUT', 'files' => 'true']) !!}
 
 				<div class="form-group">
 					{!! Form::label('clave', 'Clave', ['class' => 'col-sm-2 control-label']) !!}
 					<div class="col-sm-10">
-						{!! Form::text('clave', null, ['placeholder' => 'Clave única o número del articulo', 'class' => 'form-control', 'required']) !!}
+						{!! Form::text('clave', $articulo->clave, ['placeholder' => 'Clave única o número del articulo', 'class' => 'form-control', 'required']) !!}
 					</div>
 				</div>
 				<div class="form-group">
 					{!! Form::label('nombre', 'Nombre', ['class' => 'col-sm-2 control-label']) !!}
 					<div class="col-sm-10">
-						{!! Form::text('nombre', null, ['placeholder' => 'Coloca el nombre del artículo', 'class' => 'form-control', 'required']) !!}
+						{!! Form::text('nombre', $articulo->nombre, ['placeholder' => 'Coloca el nombre del artículo', 'class' => 'form-control', 'required']) !!}
 					</div>
 				</div>
 				<div class="form-group">
@@ -49,19 +49,19 @@
 						'1' => 'LIQUIDO', 
 						'2' => 'MECANICO',
 						'3' => 'ELECTRICO',
-						'4' => 'VARIOS'], null, ['placeholder' => 'Selecciona la Categoria...', 'class' => 'form-control']) !!}
+						'4' => 'VARIOS'], $articulo->id_categoria, ['placeholder' => 'Selecciona la Categoria...', 'class' => 'form-control']) !!}
 					</div>
 				</div>
 				<div class="form-group">
 					{!! Form::label('cantidad', 'Cantidad', ['class' => 'col-sm-2 control-label']) !!}
 					<div class="col-sm-10">
-						{!! Form::text('cantidad', null, ['placeholder' => 'Número de piezas disponibles en inventario', 'class' => 'form-control', 'required|integer']) !!}
+						{!! Form::text('cantidad', $articulo->cantidad, ['placeholder' => 'Número de piezas disponibles en inventario', 'class' => 'form-control', 'required|integer']) !!}
 					</div>
 				</div>
 				<div class="form-group">
 					{!! Form::label('stock', 'Stock', ['class' => 'col-sm-2 control-label']) !!}
 					<div class="col-sm-10">
-						{!! Form::text('stock', null, [
+						{!! Form::text('stock', $articulo->stock, [
 												'placeholder' => 'Mínimo permitido antes de realizar pedido', 
 												'class' => 'form-control',
 												'required|integer']) !!}
@@ -70,7 +70,7 @@
 				<div class="form-group">
 					{!! Form::label('precio', 'Precio', ['class' => 'col-sm-2 control-label']) !!}
 					<div class="col-sm-10">
-						{!! Form::text('precio', null, [
+						{!! Form::text('precio', $articulo->precio, [
 												'placeholder' => 'Ingrese el precio de venta del producto', 
 												'class' => 'form-control', 'required|numeric']) !!}
 					</div>
@@ -78,7 +78,7 @@
 				<div class="form-group">
 					{!! Form::label('marca', 'Marca', ['class' => 'col-sm-2 control-label']) !!}
 					<div class="col-sm-10">
-						{!! Form::text('marca', null, [
+						{!! Form::text('marca', $articulo->marca, [
 												'placeholder' => 'Ingrese la marca de la pieza para una mejor clasificación', 
 												'class' => 'form-control', 'required']) !!}
 					</div>

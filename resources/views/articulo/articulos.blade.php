@@ -2,7 +2,7 @@
 
 @section('content')
 	<div class= "container">
-		<div class = "jumbotron">
+		<div class = "table-responsive">
             <a href="{{ route('articulo.create') }}" class = "btn btn-info">Nuevo Artículo</a>
             <!--Buscador-->
             {!! Form::open(['route' => 'articulo.index', 'method' => 'GET', 'class' => 'navbar-form pull-right']) !!}
@@ -12,31 +12,38 @@
                 </div>
             {!! Form::close() !!}
             <!--Fin del buscador-->
-            &nbsp
+            &nbsp;
     		<table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th>Imagen</th>
                         <th>Clave</th>
                         <th>Nombre</th>
                         <th>Tamaño</th>
-                        <th>Categoria</th>
                         <th>Cantidad</th>
-                        <th>Stock</th>
                         <th>Precio</th>
                         <th>Marca</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($articulos as $articulo)
                     <tr>
+                        <td><img src="{{ asset('imagen/articulo/'.$articulo->imagen) }}" atl = "{{asset('img/car.png')}}" width = "60px" height = "60px"></td>
                         <td><a href="articulo/{{$articulo->id}}">{{ $articulo->clave }}</a></td>
                         <td>{{ $articulo->nombre }}</td>
                         <td>{{ $articulo->tamano }}</td>
-                        <td>{{ $articulo->categoria->nombre }}</td>
                         <td>{{ $articulo->cantidad }}</td>
-                        <td>{{ $articulo->stock }}</td>
-                        <td>{{ $articulo->precio }}</td>
-                        <td>{{ $articulo->marca }}</td>                        
+                        <td>${{ $articulo->precio }}</td>
+                        <td>{{ $articulo->marca }}</td>
+                        <td>
+                            <a href="{{ route('articulo.edit', $articulo->id) }}" class = "btn btn-warning">
+                                <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                            </a>&nbsp;&nbsp;
+                            <a href="{{ route('articulo.destroy', $articulo->id) }}" onclick = "return confirm('¿Deseas eliminar este articulo?')" class = "btn btn-danger">
+                                <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+                            </a>
+                        </td>                  
                     </tr>
                     @endforeach
                 </tbody>

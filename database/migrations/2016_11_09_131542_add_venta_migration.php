@@ -17,7 +17,7 @@ class AddVentaMigration extends Migration
             $table->increments('id');
             $table->date('fecha');
             $table->double('total', 15, 2);
-            $table->string('pago');
+            $table->string('pago')->default('EF');
             $table->integer('id_cliente')->unsigned();
             $table->timestamps();
 
