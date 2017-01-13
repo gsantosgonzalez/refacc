@@ -8,7 +8,7 @@
                 <div class="panel-heading">Bienvenido</div>
 
                 <div class="panel-body">
-                    Estás dentro.
+                    Total de Ventas de Hoy: {{$totalVentasHoy}}
                 </div>
             </div>
         </div>

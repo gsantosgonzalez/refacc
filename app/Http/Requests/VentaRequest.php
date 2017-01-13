@@ -24,6 +24,7 @@ class VentaRequest extends FormRequest
     public function rules()
     {
         return [
+            'id_articulo' => 'required',
             'term' => 'required',
             'cantidad' => 'required|integer|min:1'
         ];

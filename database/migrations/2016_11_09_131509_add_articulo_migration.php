@@ -24,6 +24,7 @@ class AddArticuloMigration extends Migration
             $table->double('precio', 15, 2);
             $table->string('marca');
             $table->string('imagen')->nullable();
+            $table->string('status')->default('activo');
             $table->timestamps();
 
             $table->foreign('id_categoria')->references('id')->on('categoria')->onDelete('cascade');

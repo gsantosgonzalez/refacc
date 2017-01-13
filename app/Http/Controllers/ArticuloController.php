@@ -19,7 +19,8 @@ class ArticuloController extends Controller
     public function index(Request $request)
     {
         $articulos = Articulo::where('nombre', 'like', '%'.$request->nombre.'%')
-                                ->orderBy('id', 'DESC')
+                                ->where('status', '=', 'activo')
+                                ->orderBy('id', 'ASC')
                                 ->paginate(5);
         return view('articulo.articulos')->with('articulos', $articulos);
     }

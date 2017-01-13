@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'America/Mexico_City',
 
     /*
     |--------------------------------------------------------------------------
@@ -166,9 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
-
-        //
-
+        
         /*
          * Application Service Providers...
          */
@@ -180,6 +178,7 @@ return [
 
         Collective\Html\HtmlServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
     ],
 
@@ -231,7 +230,8 @@ return [
         //Laravelcollective
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+        
     ],
 
 ];

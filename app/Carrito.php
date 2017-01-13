@@ -8,15 +8,11 @@ class Carrito extends Model
 {
     protected $table = 'carrito';
 
-    protected $fillable = ['id', 'nombre', 'cantidad', 'precio', 'total', 'id_venta'];
+    protected $fillable = ['id_venta', 'id_articulo', 'cantidad', 'precio', 'total'];
 
     public function articulo()
     {
-    	return $this->hasMany('App\Articulo', 'id');
+    	return $this->belongsTo('App\Articulo', 'id_articulo');
     }
 
-    public function venta()
-    {
-    	return $this->belongsTo('App\Venta', 'id_venta');
-    }
 }

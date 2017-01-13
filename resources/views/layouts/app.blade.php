@@ -13,6 +13,7 @@
     <!-- Styles -->
     @yield('estilos')
     <link href="{{asset('bootstrap/css/bootstrap.css')}}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{asset('jquery/jqueryui/jquery-ui.css')}}">
 
     <!-- Scripts -->
     <script>
@@ -57,27 +58,26 @@
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="{{ url('/login') }}">Entrar</a></li>
-                            <li><a href="{{ url('/register') }}">Registrar</a></li>
+                            <li><a class="btn btn-link" href="{{ url('/login') }}">Entrar</a></li>
+                            <li><a class="btn btn-link" href="{{ url('/register') }}">Registrar</a></li>
                         @else
-                            <li><a href="{{ url('/articulo') }}">Articulos</a></li>
-                            <li><a href="{{ url('/venta') }}">Ventas</a></li>
-                            <li><a href="{{ url('/compra') }}">Compras</a></li>
-                            <li><a href="{{ url('/cliente') }}">Clientes</a></li>
-                            <li><a href="{{ url('/proveedor') }}">Proveedores</a></li>    
+                            <li><a class="btn btn-link" href="{{ url('/notificacion') }}"><span class="glyphicon glyphicon-bell" aria-hidden="true"></span></a></li>
+                            <li><a class="btn btn-link" href="{{ url('/articulo') }}">Articulos</a></li>
+                            <li><a class="btn btn-link" href="{{ url('/venta') }}">Ventas</a></li>
+                            <li><a class="btn btn-link" href="{{ url('/compra') }}">Compras</a></li>
+                            <li><a class="btn btn-link" href="{{ url('/cliente') }}">Clientes</a></li>
+                            <li><a class="btn btn-link" href="{{ url('/proveedor') }}">Proveedores</a></li>    
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                <a href="#" class="dropdown-toggle btn btn-link" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="true">
+                                    {{ strtoupper(Auth::user()->name) }}
+                                    <span class="caret"></span>
                                 </a>
-
-                                <ul class="dropdown-menu" role="menu">
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                     <li>
-                                        <a href="{{ url('/logout') }}"
-                                            onclick="event.preventDefault();
+                                        <a href="{{ url('/logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            Logout
+                                            Salir
                                         </a>
-
                                         <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
@@ -94,7 +94,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="/js/app.js"></script>
     <script src = "/jquery/jquery-3.1.1.js"></script>
     <script src="/jquery/jqueryui/jquery-ui.js"></script>
     <script src=" {{asset('plugins/chosen/chosen.jquery.js')}} "></script>
@@ -108,6 +107,15 @@
             $( "#term" ).autocomplete({
                 source: "{{ route('venta.autocomplete') }}",
                 minLength: 3,
+                select: function(event, ui){
+                    $('#id_articulo').val(ui.item.id);
+                }
+            });
+        });
+        $(function()
+        {
+            $('#datepicker').datepicker({
+                dateFormat: 'yy-mm-dd'
             });
         });
     </script>

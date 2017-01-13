@@ -29,7 +29,6 @@ class AddVentaMigration extends Migration
             $table->integer('id_venta')->unsigned();
             $table->integer('id_articulo')->unsigned();
             $table->integer('cantidad');
-            $table->double('precio', 15, 2);
 
             $table->foreign('id_venta')->references('id')->on('venta')->onDelete('cascade');
             $table->foreign('id_articulo')->references('id')->on('articulo')->onDelete('cascade');

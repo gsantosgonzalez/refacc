@@ -9,16 +9,16 @@ class Articulo extends Model
     protected $table = 'articulo';
 
     protected $fillable = [
-    	'clave', 'nombre', 'id_categoria', 'cantidad', 'stock', 'precio', 'marca', 'imagen'
-    ];
+    	'clave', 'nombre', 'id_categoria', 'cantidad', 'stock', 'precio', 'marca', 'imagen'];
 
-    public function categoria(){
+    public function categoria()
+    {
     	return $this->belongsTo('App\Categoria', 'id_categoria');
     }
 
     public function modelo()
     {
-    	return $this->belongsToMany('App\Modelo', 'compatibilidad', 'id_articulo', 'id_modelo');
+    	return $this->belongsToMany('App\Modelo', 'compatibilidad', 'id_articulo', 'id_modelo')->withPivot('detalle');
     }
 
     public function venta()
@@ -29,6 +29,11 @@ class Articulo extends Model
     public function compra()
     {
     	return $this->belongsToMany('App\Compra', 'compra_articulo', 'id_articulo', 'id_compra');
+    }
+
+    public function carrito()
+    {
+        return $this->belongsTo('App\Carrito', 'id_articulo');
     }
 
     public function scopeSearch($query, $nombre)

@@ -54,15 +54,15 @@ Route::group(['middleware' => ['auth', 'web']], function(){
 		'uses' => 'VentaController@autocomplete',
 		'as' => 'venta.autocomplete'
 	]);
-	Route::get('venta/{numVenta}/cierraVenta', [
+	Route::get('venta/cierraVenta', [
 			'uses' => 'VentaController@cierraVenta',
 			'as' => 'venta.cierraVenta'
 		]);
-	Route::get('venta/{id}/eliminar', [
+	Route::post('venta/eliminar', [
 			'uses' =>  'VentaController@eliminar',
 			'as' => 'venta.eliminar'
 		]);
-	Route::get('venta/cancelaVenta', [
+	Route::get('venta/{id_venta}/cancelaVenta', [
 			'uses' =>  'VentaController@cancelaVenta',
 			'as' => 'venta.cancelaVenta'
 		]);
@@ -75,4 +75,23 @@ Route::group(['middleware' => 'auth'], function(){
 
 Route::group(['middleware' => 'auth'], function(){
 	Route::resource('compra', 'CompraController');
+});
+
+Route::group(['middleware' => 'auth'], function(){
+	Route::get('imprimir/{id}', [
+		'uses' => 'ImpresionController@index',
+		'as' => 'imprimir'
+	]);
+});
+
+Route::get('test', function(){
+	return view('test');
+});
+
+Route::group(['middleware' => 'auth'], function(){
+	Route::get('notificacion/vaciar', [
+		'uses' => 'NotificacionController@vaciar',
+		'as' => 'notificacion.vaciar'
+	]);
+	Route::resource('notificacion', 'NotificacionController');
 });

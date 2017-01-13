@@ -27,9 +27,9 @@ class ArticuloRequest extends FormRequest
             'clave' => 'max:20|required',
             'nombre' => 'max:80|required',
             'id_categoria' => 'required',
-            'cantidad' => 'required|integer',
-            'stock' => 'required|integer',
-            'precio' => 'required|numeric',
+            'cantidad' => 'required|integer|min:1',
+            'stock' => 'required|integer|min:1',
+            'precio' => 'required|numeric|min:1',
             'marca' => 'max:40|required'
         ];
     }

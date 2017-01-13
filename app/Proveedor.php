@@ -14,7 +14,7 @@ class Proveedor extends Model
 
     public function compra()
     {
-    	return $this->hasMany('App\Compra', 'id_proveedor');
+    	return $this->hasMany('App\Compra', 'id_compra');
     }
     
 }

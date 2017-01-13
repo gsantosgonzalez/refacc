@@ -17,8 +17,6 @@ use App\Cliente;
 
 class VentaController extends Controller
 {
-    static $porVender = array();
-    static $cont = 0;
     /**
     * Display a listing of the resource.
     *
@@ -26,7 +24,8 @@ class VentaController extends Controller
     */
     public function index(Request $request)
     {
-        $ventas = Venta::orderBy('fecha', 'ASC')->paginate(5);
+        $hoy = Carbon::now()->format('Y-m-d');
+        $ventas = Venta::where('fecha', $hoy)->orderBy('fecha', 'ASC')->paginate(8);
         return view('venta.ventas')
             ->with('ventas', $ventas);
     }
@@ -36,10 +35,11 @@ class VentaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
-        //dd($request);
-        return view('venta.nuevaVenta');
+        $id_venta = time();
+        $clientes = Cliente::pluck('nombre', 'id')->all();
+        return view('venta.nuevaVenta')->with('id_venta', $id_venta);
     }
 
     /**
@@ -50,7 +50,9 @@ class VentaController extends Controller
      */
     public function store(Request $request)
     {
-        $venta = new Venta($request->all());
+        $this->cierraVenta($request->id_venta,  $request->id_cliente);
+
+        return redirect('venta/'.$request->numVenta);
     }
 
     /**
@@ -61,7 +63,12 @@ class VentaController extends Controller
      */
     public function show($id)
     {
-        
+        $venta = Venta::find($id);
+        /*$articulos = [];
+        foreach ($venta->articulo as $articulo) {
+            $articulos[] = $articulo;
+        }*/
+        return view('venta.muestraVenta')->with('venta', $venta);
     }
 
     /**
@@ -72,6 +79,7 @@ class VentaController extends Controller
      */
     public function edit($id)
     {
+        return redirect('/');
     }
 
     /**
@@ -94,7 +102,7 @@ class VentaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return view('error\503');
     }
 
     /**
@@ -140,78 +148,86 @@ class VentaController extends Controller
 
     public function add(VentaRequest $request)
     {
-        $term = explode('|', $request->term);
-
-        $nombre = $term[0];
-        $tamano = $term[1];
-        $marca = $term[2];
         $cantidad = $request->cantidad;
-        $numVenta = DB::table('venta')->count() + 1;
-        $articulo = Articulo::where('nombre', 'LIKE', '%'.$nombre.'%')
-            ->where('tamano', 'LIKE', '%'.$tamano.'%')
-            ->where('marca',  'LIKE', '%'.$marca.'%')
-            ->get();
+        $id_venta = $request->id_venta;
+        $articulo = Articulo::find($request->id_articulo);
         $cart = new Carrito();
-        foreach($articulo as $art)
+        $cart->id_venta = $id_venta;
+        $cart->id_articulo = $articulo->id;
+        $cart->cantidad = $cantidad;
+        $cart->precio = $articulo->precio;
+        $cart->total = $articulo->precio*$cantidad;
+
+        if($this->agregaArticulo($cart, $articulo->cantidad))
         {
-            if($art->cantidad >= $cantidad)
-            {
-                $cart->id = $art->id;
-                $cart->nombre = $art->nombre.' | '.$art->tamano.' | '.$art->marca;
-                $cart->cantidad = $cantidad;
-                $cart->precio = $art->precio;
-                $cart->total = $art->precio*$cantidad;
-                $cart->id_venta = $numVenta;
-                $this->agregaArticulo($cart);
-            }
-            else
-            {
-                Flash::error('No hay suficientes piezas, solo quedan: ' . $art->cantidad . ' piezas');
-
-                return view('venta/nuevaVenta');
-            }
+            $total = DB::table('carrito')->where('id_venta', $id_venta)->sum('total');
+            $carritos = Carrito::where('id_venta', $id_venta)->get();
+            return view('venta/nuevaVenta')
+            ->with('carritos', $carritos)
+            ->with('total', $total)
+            ->with('id_venta', $id_venta)
+            ->with('clientes', Cliente::pluck('nombre', 'id')->all());
         }
-        $total = DB::table('carrito')->where('id_venta', $numVenta)->sum('total');
-        $articulos = Carrito::all();
-        return view('venta/nuevaVenta')
-            ->with('articulos', $articulos)
-            ->with('total', $total)
-            ->with('numVenta', $numVenta);
+        else
+        {
+            Flash::error('No hay suficientes piezas, solo quedan: ' . $articulo->cantidad . ' piezas de '. $articulo->nombre.', '.$articulo->tamano.', '.$articulo->marca);
+            return redirect()->back();
+        }
     }
 
-    public function eliminar($id)
+    /**
+     * Elimina un articulo de la lista de compra.
+     *
+     * @param $id   Id del articulo a eliminar
+     * @return 
+     */
+    public function eliminar(Request $request)
     {
-        DB::table('carrito')->where('id', '=', $id)->delete();
-        $numVenta = DB::table('venta')->count() + 1;
-        $total = DB::table('carrito')->where('id_venta', $numVenta)->sum('total');
-        $articulos = Carrito::all();
+        DB::table('carrito')
+            ->where('id_venta', '=', $request->id_venta)
+            ->where('id_articulo', '=', $request->id_articulo)
+            ->delete();
+        $total = DB::table('carrito')->where('id_venta', $request->id_venta)->sum('total');
+        $carritos = Carrito::all();
         return view('venta/nuevaVenta')
-            ->with('articulos', $articulos)
+            ->with('carritos', $carritos)
             ->with('total', $total)
-            ->with('numVenta', $numVenta);
+            ->with('id_venta', $request->id_venta)
+            ->with('clientes', Cliente::pluck('nombre', 'id')->all());
     }
 
-    public function cierraVenta($numVenta)
+    /**
+     * Cierra la venta, guarda la venta y el detalle de esta en la BD.
+     *
+     * @param  $numVenta    El número siguiente (id) de venta
+     * @return 
+     */
+    protected function cierraVenta($id_venta, $id_cliente)
     {
-        $articulos = Carrito::all();
+        $articulos = Carrito::where('id_venta', '=', $id_venta)->get();
         $venta = new Venta();
-        $venta->id = $numVenta;
         $venta->fecha = Carbon::now()->format('Y-m-d');
-        $venta->total = DB::table('carrito')->where('id_venta', $numVenta)->sum('total');
+        $venta->total = DB::table('carrito')->where('id_venta', $id_venta)->sum('total');
+        $venta->id_cliente = $id_cliente;
         $venta->save();
         foreach ($articulos as $articulo) {
-            $porVender = Articulo::find($articulo->id);
-            $porVender->venta()->attach(Venta::find($numVenta), ['cantidad' => $articulo->cantidad]);
+            $porVender = Articulo::find($articulo->id_articulo);
+            $porVender->venta()->attach(Venta::find($venta->id), ['cantidad' => $articulo->cantidad]);
             $porVender->cantidad = $porVender->cantidad - $articulo->cantidad;
+            $porVender->save();
         }
 
-        DB::table('carrito')->truncate();
-        return redirect('venta');
+        DB::table('carrito')->where('id_venta', '=', $id_venta)->delete();
     }
 
-    public function cancelaVenta()
+    /**
+     * Cancela la venta, vacia el carrito, para dejarlo listo para otra compra
+     *
+     * 
+     */
+    public function cancelaVenta($id_venta)
     {
-        DB::table('carrito')->truncate();
+        DB::table('carrito')->where('id_venta', '=', $id_venta)->delete();
 
         return redirect('venta');
     }
@@ -223,17 +239,34 @@ class VentaController extends Controller
      * @param  \App\Carrito  $carrito
      * 
      */
-    public function agregaArticulo(Carrito $carrito)
+    protected static function agregaArticulo(Carrito $carrito, $disponibles)
     {
-        $porAgregar = Carrito::find($carrito->id);
-        if($porAgregar === null)
+        $porAgregar = Carrito::where('id_venta', $carrito->id_venta)->where('id_articulo', $carrito->id_articulo)->first();
+        if(count($porAgregar)>0)
         {
-            $carrito->save();
+            $porAgregar->cantidad += $carrito->cantidad;
+            $porAgregar->total = $porAgregar->cantidad * $porAgregar->precio;
+            if($disponibles >= $porAgregar->cantidad)
+            {
+                $porAgregar->save();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {
-            $porAgregar->cantidad += $carrito->cantidad;
-            $porAgregar->save();
+            if($disponibles >= $carrito->cantidad)
+            {
+                $carrito->save();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 
