@@ -117,7 +117,8 @@ class VentaController extends Controller
         {
             $articulos = Articulo::where(function($query) use ($request){
                 if(($term = $request->get('term'))){
-                    $query->orWhere('nombre', 'LIKE', '%'.$term.'%');
+                    $query->where('nombre', 'LIKE', '%'.$term.'%')
+                    ->where('status', '=', 'activo');
                 }
             })
             ->orderBy('id', 'ASC')

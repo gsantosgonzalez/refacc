@@ -27,8 +27,8 @@
 								<td></td>
 								<td>{{$articulo->pivot->cantidad}}</td>
 								<td>{{$articulo->nombre.' '.$articulo->tamano.' '.$articulo->marca}}</td>
-								<td>{{$articulo->precio}}</td>
-								<td>{{$articulo->pivot->cantidad*$articulo->precio}}</td>
+								<td align="right">{{$articulo->precio}}</td>
+								<td align="right">{{$articulo->pivot->cantidad*$articulo->precio}}</td>
 							</tr>
 						@endforeach
 					</tbody>
@@ -38,24 +38,24 @@
 							<td></td>
 							<td></td>
 							<td></td>
-							<td>Subtotal:</td>
-							<td>{{number_format($venta->total/1.16, 2, '.', ',')}}</td>
+							<td align="right">Subtotal:</td>
+							<td align="right">{{number_format($venta->total/1.16, 2, '.', ',')}}</td>
 						</tr>
 						<tr>
 							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>
-							<td>IVA(16%):</td>
-							<td>{{number_format((($venta->total/1.16)*0.16), 2, '.', ',')}}</td>
+							<td align="right">IVA(16%):</td>
+							<td align="right">{{number_format((($venta->total/1.16)*0.16), 2, '.', ',')}}</td>
 						</tr>
 						<tr>
 							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>
-							<td>Total:</td>
-							<td>{{$venta->total}}</td>
+							<td align="right">Total:</td>
+							<td align="right">{{$venta->total}}</td>
 						</tr>
 					</tfoot>
 				</table>

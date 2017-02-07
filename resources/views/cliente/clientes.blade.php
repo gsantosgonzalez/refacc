@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-	<div class= "container">
-		<div class = "jumbotron">
+
             <a href="{{ route('cliente.create') }}" class = "btn btn-info">Nuevo Cliente</a>
             <!--Buscador-->
             {!! Form::open(['route' => 'cliente.index', 'method' => 'GET', 'class' => 'navbar-form pull-right']) !!}
@@ -43,6 +42,5 @@
             <div class="text-center">
                 {!! $clientes->render() !!}
             </div>
-		<div>
-	</div>
+		
 @endsection

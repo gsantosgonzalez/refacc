@@ -40,4 +40,5 @@ class Articulo extends Model
     {
         return $query->where('nombre', 'like', "%$nombre%?");
     }
+
 }

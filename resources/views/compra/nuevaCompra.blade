@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('estilos')
+    <link rel="stylesheet" type="text/css" href="{{asset('css\tablas.css')}}">
+@endsection
+
 @section('content')
     @if (count($errors) > 0)
         <div class="alert alert-danger">
@@ -11,8 +15,8 @@
         </div>
     @endif
 
-
-		<div class="row">
+	<div class="container">
+		<div class="jumbotron">
 			<!--Buscador de articulos-->
             {!! Form::open(['route' => 'venta.add', 'method' => 'GET', 'class' => 'form-inline']) !!}
                 <div class="form-group">
@@ -98,4 +102,5 @@
             @endif
         @endif
     
+    </div>
 @endsection

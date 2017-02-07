@@ -14,6 +14,7 @@
     @yield('estilos')
     <link href="{{asset('bootstrap/css/bootstrap.css')}}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{asset('jquery/jqueryui/jquery-ui.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('plugins/chosen/chosen.css')}}">
 
     <!-- Scripts -->
     <script>
@@ -90,14 +91,18 @@
             </div>
         </nav>
         @include('flash::message')
-        @yield('content')
+        <div class="container">
+            <div class="jumbotron">
+                @yield('content')
+            </div>
+        </div>
     </div>
 
     <!-- Scripts -->
-    <script src = "/jquery/jquery-3.1.1.js"></script>
-    <script src="/jquery/jqueryui/jquery-ui.js"></script>
-    <script src=" {{asset('plugins/chosen/chosen.jquery.js')}} "></script>
-    <script src = "{{ asset('bootstrap/js/bootstrap.js') }}"></script>
+    <script src = "{{asset('jquery/jquery-3.1.1.js')}}"></script>
+    <script src = "{{asset('jquery/jqueryui/jquery-ui.js')}}"></script>
+    <script src = "{{asset('plugins/chosen/chosen.jquery.js')}}"></script>
+    <script src = "{{asset('bootstrap/js/bootstrap.js')}}"></script>
 
     @yield('script')
     <script>

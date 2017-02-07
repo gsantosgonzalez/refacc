@@ -1,19 +1,7 @@
 @extends('layouts.app')
 
-@section('estilos')
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
-	<style type="text/css">
-		.botones{
-			margin: auto 5%;
-			padding: 15px;
-		}
-	</style>
-@endsection
-
 @section('content')
 		
-	<div class="container">
-		<div class="jumbotron">
 			<div class="panel panel-default">
 				<div class="media center">
 					<div class="media-left media-middle">
@@ -38,7 +26,5 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-
+		
 @endsection

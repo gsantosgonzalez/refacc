@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Carbon\Carbon;
+use App\Compra;
+
 class CompraController extends Controller
 {
     /**
@@ -13,7 +16,10 @@ class CompraController extends Controller
      */
     public function index()
     {
-        //
+        $hoy = Carbon::now()->format('Y-m-d');
+        $compras = Compra::where('fecha', $hoy)->orderBy('fecha', 'ASC')->paginate(8);
+        return view('compra.compras')
+            ->with('compras', $compras);
     }
 
     /**

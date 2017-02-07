@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-	<div class= "container">
-		<div class = "jumbotron">
+	
             <a href="{{ route('articulo.create') }}" class = "btn btn-info">Nuevo Artículo</a>
             <!--Buscador-->
             {!! Form::open(['route' => 'articulo.index', 'method' => 'GET', 'class' => 'navbar-form pull-right']) !!}
@@ -53,6 +52,5 @@
                     {!! $articulos->render() !!}
                 </div>
             </div>
-		<div>
-	</div>
+		
 @endsection

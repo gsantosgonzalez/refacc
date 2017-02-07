@@ -1,21 +1,8 @@
 @extends('layouts.app')
 
-@section('estilos')
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
-	<style type="text/css">
-		.formulario{
-			background-color: #d9d9d9;
-			margin: auto 20%;
-			padding: 15px;
-			position: absolute; 
-			width:60%;
-		}
-	</style>
-@endsection
-
 @section('content')
 
-@if (count($errors) > 0)
+	@if (count($errors) > 0)
 	    <div class="alert alert-danger">
 	        <ul>
 	            @foreach ($errors->all() as $error)
@@ -24,9 +11,8 @@
 	        </ul>
 	    </div>
 	@endif
-	<div class="content">
-		<div class = "formulario">
-			<h1>Editar Artículo {{$articulo->nombre}}</h1>
+		<div class = "row">
+			<h2>Editar Artículo: {{$articulo->nombre}} | {{$articulo->marca}}</h2>
 
 			{!! Form::open(['route' => ['articulo.update', $articulo], 'method' => 'PUT', 'files' => 'true']) !!}
 
@@ -100,6 +86,5 @@
 
 			{!! Form::close() !!}
 		</div>
-	</div>
 
 @endsection

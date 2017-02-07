@@ -1,18 +1,5 @@
 @extends('layouts.app')
 
-@section('estilos')
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
-	<style type="text/css">
-		.formulario{
-			background-color: #d9d9d9;
-			margin: auto 10%;
-			padding: 15px;
-			position: absolute; 
-			width:80%;
-		}
-	</style>
-@endsection
-
 @section('content')
 	@if (count($errors) > 0)
 	    <div class="alert alert-danger">
@@ -23,8 +10,7 @@
 	        </ul>
 	    </div>
 	@endif
-	<div class="content">
-		<div class = "formulario">
+		<div class = "row">
 			{!! Form::open(['route' => 'proveedor.store']) !!}
 
 				<div class="form-group">
@@ -56,6 +42,5 @@
 
 			{!! Form::close() !!}
 		</div>
-	</div>
-
+	
 @endsection

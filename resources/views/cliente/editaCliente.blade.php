@@ -1,18 +1,5 @@
 @extends('layouts.app')
 
-@section('estilos')
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
-	<style type="text/css">
-		.formulario{
-			background-color: #d9d9d9;
-			margin: auto 20%;
-			padding: 15px;
-			position: absolute; 
-			width:60%;
-		}
-	</style>
-@endsection
-
 @section('content')
 	@if (count($errors) > 0)
 	    <div class="alert alert-danger">
@@ -23,9 +10,8 @@
 	        </ul>
 	    </div>
 	@endif
-	<div class="content">
-		<div class = "formulario">
-			<h1>Edita Cliente {{$cliente->nombre}}</h1>
+		<div class = "row">
+			<h1>Edita Cliente: {{$cliente->nombre}}</h1>
 
 			{!! Form::open(['route' => ['cliente.update', $cliente], 'method' => 'PUT']) !!}
 
@@ -52,12 +38,11 @@
 
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-default" onclick = "return confirm('¿Confirma la actualización?')">Submit</button>
+						<button type="submit" class="btn btn-primary" onclick = "return confirm('¿Confirma la actualización?')">Guardar</button>
 					</div>
 				</div>
 
 			{!! Form::close() !!}
 		</div>
-	</div>
-
+	
 @endsection

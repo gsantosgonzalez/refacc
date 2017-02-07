@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-	<div class= "container">
-		<div class="jumbotron">
 			<h3>Ventas del día</h3>
 			<hr>
 			<a href="{{ route('venta.create') }}" class = "btn btn-info">Nueva Venta</a>
@@ -37,6 +35,5 @@
 			@else
 				<p class="bg-default">No hay ventas del día</p>
 			@endif
-		</div>
-	</div>
+		
 @endsection

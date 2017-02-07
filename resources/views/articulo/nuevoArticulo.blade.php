@@ -1,18 +1,5 @@
 @extends('layouts.app')
 
-@section('estilos')
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
-	<style type="text/css">
-		.formulario{
-			background-color: #d9d9d9;
-			margin: auto 20%;
-			padding: 15px;
-			position: absolute; 
-			width:60%;
-		}
-	</style>
-@endsection
-
 @section('content')
 
 	@if (count($errors) > 0)
@@ -24,9 +11,8 @@
 	        </ul>
 	    </div>
 	@endif
-	<div class="container">
-		<div class = "formulario">
-			<h1>Ingresar a Inventario</h1>
+		<div class = "row">
+			<h2>Ingresar a Inventario</h2>
 
 			{!! Form::open(['route' => 'articulo.store', 'files' => 'true']) !!}
 
@@ -100,6 +86,6 @@
 
 			{!! Form::close() !!}
 		</div>
-	</div>
+
 
 @endsection

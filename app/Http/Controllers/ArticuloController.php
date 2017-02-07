@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 use Laracasts\Flash\Flash;
 use App\Http\Requests\ArticuloRequest;
@@ -127,7 +128,9 @@ class ArticuloController extends Controller
     public function destroy($id)
     {
         $articulo = Articulo::find($id);
-        $articulo->delete();
+        DB::table('articulo')
+            ->where('id', $id)
+            ->update(['status' => 'inactivo']);
 
         Flash::error('Se ha eliminado al articulo: ' . $articulo->nombre);
 
